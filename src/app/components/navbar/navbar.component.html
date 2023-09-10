@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a routerLink="/" class="navbar-brand" href="#"><h2>Image Editor</h2></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse1">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a routerLink="/loadImage" class="btn btn-lg btn-primary" aria-current="page" href="#">Load image</a>
+        </li>
+      </ul>
+    </div>
+          <div class="collapse navbar-collapse" id="navbarCollapse2">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <button type="button" routerLink="/color" class="btn btn-success" aria-current="page" href="#">Color functions</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" routerLink="/convert" class="btn btn-info" aria-current="page" href="#">Convert functions</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" routerLink="/edit" class="btn btn-warning" aria-current="page" href="#">Edit functions</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" routerLink="/size" class="btn btn-danger" aria-current="page" href="#">Size functions</button>
+          </li>
+        </ul>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarCollapse3">
+      </div>
+  </div>
+
+  <div class="collapse navbar-collapse" id="navbarCollapse4">
+    <ul class="navbar-nav">
+      <div class="nav-item">
+        <button type="button" routerLink="/about" class="nav-link active" aria-current="page" href="#">About</button>
+      </div>
+    </ul>
+  </div>
+</nav>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+  <div class="container-fluid">
+    <div class="nav-item">
+      <h4 class="navbar-brand active" aria-current="page" href="#">Selected image: {{getImageUrl()}}</h4>
+    </div>
+  </div>
+</nav>

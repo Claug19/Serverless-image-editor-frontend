@@ -1,0 +1,37 @@
+<body>
+<div class='parent'>
+  <div class='child child-left'>
+    <br/>
+    <h1>Load image:</h1>
+    <h3>Select the image you would like to process:</h3>
+    <p>Selected image will be loaded to Amazon Web Services S3 Bucket</p>
+
+    <br/>
+    <form method="post">
+        <input
+        type="file"
+        accept=".jpeg,.png,.tiff,.bmp"
+        id="imgInp"
+        (change)="onFileSelected($event)"
+      />
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <button type="submit" (click)="uploadFile()" class="btn btn-success">Upload</button>
+    </form>
+    <div *ngIf="getResponse()!=''" class="result">
+      <br/>
+      <p>Result:</p>
+      <textarea  readonly style="resize: none;" rows="2" cols="50"></textarea>
+    </div>
+  </div>
+  <div *ngIf="getResponse()!=''" class='child child-right' >
+    <h4 style="text-align: center">Currently selected S3 Bucket image:</h4>
+    <a href="https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/images/1.jpeg">
+      <img src="https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/images/1.jpeg" class="photo" alt="alt"/>
+    </a>
+    <p style="text-align: center">(Click Image to open at max resolution)</p>
+  </div>
+</div>
+</body>

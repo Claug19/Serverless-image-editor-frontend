@@ -1,0 +1,6 @@
+{
+  "/Prod": {
+    "target": "https://qu48i6qbjb.execute-api.us-east-1.amazonaws.com",
+    "secure": false
+  }
+}

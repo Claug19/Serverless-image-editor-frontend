@@ -1,0 +1,45 @@
+h1 {
+	color: #00ccff; 
+	top: +0.5em;
+	font-size: 45px;
+	font-weight: bold;
+}
+
+p {
+	color: grey;
+	top: +0.5em;
+/*	font-size: 45px;*/
+	font-weight: bold;
+}
+
+.nav-item {
+	padding-right: 3px;
+}
+
+.parent {
+/*  border: 1px solid black;*/
+  margin: 0em;
+  padding: 2rem 2rem;
+}
+.child {
+/*  border: 1px solid red;*/
+  display: inline-block;
+/*  padding: 1rem 1rem;*/
+/*  padding-right: 2em;*/
+  vertical-align: top;
+}
+
+.child-left {
+	width: 50%; 
+}
+
+.child-right {
+	width: 50%; 
+}
+
+.photo {
+	margin: auto;
+    display: block;
+	max-width: 450px;
+	max-height: 450px;
+}
