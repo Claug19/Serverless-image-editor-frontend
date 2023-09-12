@@ -16,6 +16,8 @@ import { SizeComponent } from './components/size_tab/size.component';
 import { AboutComponent } from './components/about_tab/about.component';
 
 import { ImageAppService } from './services/imageapp.services';
+import { SafePipe } from './safe.pipe';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -26,14 +28,16 @@ import { ImageAppService } from './services/imageapp.services';
     ConvertComponent,
     EditComponent,
     SizeComponent,
-    AboutComponent
+    AboutComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AlertModule.forRoot(),
     FormsModule,
-    routing
+    routing,
+    NgOptimizedImage
   ],
   providers: [ ImageAppService ],
   bootstrap: [ AppComponent ],

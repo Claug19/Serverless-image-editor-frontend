@@ -2,179 +2,150 @@ import { Injectable, Component } from "@angular/core";
 import { HttpClient, HttpClientModule, HttpHeaders } from "@angular/common/http"
 import { map } from "rxjs/operators"
 
-import { ColorCodesTextResp, ColorCodesChartResp, RgbChannelsResp, RgbHistogramResp } from './interfaces/color.interfaces';
-import { ConvertTypeResp } from './interfaces/convert.interfaces';
+
 import { FlipResp, RotateResp } from './interfaces/edit.interfaces';
-import { AddImageResp } from './interfaces/manage.interfaces';
 import { ResizeImageResp } from './interfaces/size.interfaces';
 
 
 @Injectable()
 export class ImageAppService{
-    private image_name: string ="-";
+  private image_name: string = "-";
+  private image_url: string = "-";
 
-    private apiUrl: string= "127.0.0.1:8003";
-    // private apiUrl: string= "https://qu48i6qbjb.execute-api.us-east-1.amazonaws.com/Prod";
+  private colorTextUrl = "";
+  private colorCodesUrl = "";
+  private redChannelUrl = "";
+  private greenChannelUrl = "";
+  private blueChannelUrl = "";
+  private redHUrl = "";
+  private greenHUrl = "";
+  private blueHUrl = "";
+  private rgbHUrl = "";
 
-    private jsonBodyHeaders = new HttpHeaders()
-        .set('Accept', 'application/json')
-        .set('Content-Type', 'application/json');
+  private convertUrl = "";
 
-    constructor(private _http:HttpClient){
-    }
+  private resizeUrl = "";
+
+  private jsonBodyHeaders = new HttpHeaders()
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json');
+
+  constructor(private _http:HttpClient){
+  }
 
     // getters / setters
-    setImageName(givenImageUrl: string){
-        this.image_name = givenImageUrl;
+    setImageName(givenImageName: string){
+        this.image_name = givenImageName;
     }
 
     getImageName(){
-        console.log("Image URL: ", this.image_name);
         return this.image_name;
     }
 
-    // color requests
-    colorCodesTextRequest(occurrence_value: number){
-        console.log('POST: color codes text');
-
-        const colorCodesUrl = this.apiUrl + "/color-codes-text"
-        const colorCodesBody = {
-            'images_paths' : [this.image_name],
-            'occurrence_threshold' : occurrence_value
-        };
-
-        return this._http.post<ColorCodesTextResp>(colorCodesUrl, colorCodesBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    setImageUrl(givenImageName: string){
+      this.image_url = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/images/" + givenImageName + "?t=" + new Date().getTime();
+      this.colorTextUrl = "";
+      this.colorCodesUrl = "";
+      this.redChannelUrl = "";
+      this.greenChannelUrl = "";
+      this.blueChannelUrl = "";
+      this.redHUrl = "";
+      this.greenHUrl = "";
+      this.blueHUrl = "";
+      this.rgbHUrl = "";
+      this.convertUrl = "";
+      this.resizeUrl = "";
     }
 
-    colorCodesChartRequest(occurrence_value: number){
-        console.log('POST: color codes chart');
-
-        const colorChartsUrl = this.apiUrl + "/color-codes-chart"
-        const colorCodesBody = {
-            'images_paths' : [this.image_name],
-            'occurrence_threshold' : occurrence_value
-        };
-
-        return this._http.post<ColorCodesChartResp>(colorChartsUrl, colorCodesBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    resetImageUrl() {
+      console.log("reset");
+      let temp_image = this.image_url;
+      this.image_url = "-";
+      this.image_url = temp_image;
     }
 
-    rgbChannelsRequest(occurrence_value: number){
-        console.log('POST: rgb channels');
-
-        const rgbChannelsUrl = this.apiUrl + "/rgb-channels"
-        const rgbChannelsBody = {
-            'images_paths' : [this.image_name],
-            'occurrence_threshold' : occurrence_value
-        };
-
-        return this._http.post<RgbChannelsResp>(rgbChannelsUrl, rgbChannelsBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    getImageUrl(){
+      return this.image_url;
     }
 
-    rgbHistogramRequest(occurrence_value: number){
-        console.log('POST: rgb histogram');
-
-        const rgbHistogramUrl = this.apiUrl + "/rgb-histogram"
-        const rgbHistogramBody = {
-            'images_paths' : [this.image_name],
-            'occurrence_threshold' : occurrence_value
-        };
-
-        return this._http.post<RgbHistogramResp>(rgbHistogramUrl, rgbHistogramBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    setCodesTextUrl(){
+      let image_no_ext = this.image_name.split(".", 1)[0];
+      this.colorTextUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_colorcodes.txt" + "?t=" + new Date().getTime();
     }
 
-    // convert requests
-    convertTypeRequest(new_format: string){
-        console.log('PATCH: convert type');
-
-        const convertTypeUrl = this.apiUrl + "/convert-type"
-        const convertTypeBody = {
-            'images_paths' : [this.image_name],
-            'format' : new_format
-        };
-
-        return this._http.patch<ConvertTypeResp>(convertTypeUrl, convertTypeBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    setCodesChartUrl(){
+      let image_no_ext = this.image_name.split(".", 1)[0];
+      this.colorCodesUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_colorchart.png" + "?t=" + new Date().getTime();
     }
 
-    // edit requests
-    flipHorizontalRequest(){
-        console.log('PATCH: flip horizontal');
-
-        const flipHorizontalUrl = this.apiUrl + "/flip-horizontal"
-        const flipHorizontalBody = {
-            'images_paths' : [this.image_name]
-        };
-
-        return this._http.patch<FlipResp>(flipHorizontalUrl, flipHorizontalBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    setRgbChannelsUrl(){
+      let image_no_ext = this.image_name.split(".", 1)[0];
+      let image_ext = this.image_name.split(".", 2)[1];
+      this.redChannelUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_Rchannel." + image_ext + "?t=" + new Date().getTime();
+      this.greenChannelUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_Gchannel." + image_ext + "?t=" + new Date().getTime();
+      this.blueChannelUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_Bchannel." + image_ext + "?t=" + new Date().getTime();
     }
 
-    flipVerticalRequest(){
-        console.log('PATCH: flip vertical');
-
-        const flipVerticalUrl = this.apiUrl + "/flip-vertical"
-        const flipVerticalBody = {
-            'images_paths' : [this.image_name]
-        };
-
-        return this._http.patch<FlipResp>(flipVerticalUrl, flipVerticalBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    setRgbCHistogramsUrl(){
+      let image_no_ext = this.image_name.split(".", 1)[0];
+      let image_ext = this.image_name.split(".", 2)[1];
+      this.redHUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_Rplot.png" + "?t=" + new Date().getTime();
+      this.greenHUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_Gplot.png" + "?t=" + new Date().getTime();
+      this.blueHUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_Bplot.png" + "?t=" + new Date().getTime();
+      this.rgbHUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_RGBplot.png" + "?t=" + new Date().getTime();
     }
 
-    rotateClockwiseRequest(){
-        console.log('PATCH: rotate clockwise');
-
-        const rotateClockwiseUrl = this.apiUrl + "/rotate-clockwise"
-        const rotateClockwiseBody = {
-            'images_paths' : [this.image_name]
-        };
-
-        return this._http.patch<RotateResp>(rotateClockwiseUrl, rotateClockwiseBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    getColorTextUrl(){
+        return this.colorTextUrl;
     }
 
-    rotateCounterClockwiseRequest(){
-        console.log('PATCH: rotate counter clockwise');
-
-        const rotateCounterClockwiseUrl = this.apiUrl + "/rotate-cclockwise"
-        const rotateCounterClockwiseBody = {
-            'images_paths' : [this.image_name]
-        };
-
-        return this._http.patch<RotateResp>(rotateCounterClockwiseUrl, rotateCounterClockwiseBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    getColorCodesUrl(){
+        return this.colorCodesUrl;
     }
 
-    rotate180Request(){
-        console.log('PATCH: rotate 180 degrees');
-
-        const rotate180Url = this.apiUrl + "/rotate-180"
-        const rotate180Body = {
-            'images_paths' : [this.image_name]
-        };
-
-        return this._http.patch<RotateResp>(rotate180Url, rotate180Body, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    getRedChannelUrl(){
+        return this.redChannelUrl;
     }
 
-    // manage image requests
+    getGreenChannelUrl(){
+        return this.greenChannelUrl;
+    }
 
-    // size requests
-    resizeRequest(height: number, width: number){
-        console.log('PATCH: resize image');
+    getBlueChannelUrl(){
+        return this.blueChannelUrl;
+    }
 
-        const resizeImageUrl = this.apiUrl + "/resize-image"
-        const resizeImageBody = {
-            'image_path' : [this.image_name],
-            'new_height' : height,
-            'new_width' : width
-        };
+    getRedHUrl(){
+        return this.redHUrl;
+    }
 
-        return this._http.patch<ResizeImageResp>(resizeImageUrl, resizeImageBody, { headers: this.jsonBodyHeaders })
-            .pipe(map(res => JSON.stringify(res)));
+    getGreenHUrl(){
+        return this.greenHUrl;
+    }
+
+    getBlueHUrl(){
+        return this.blueHUrl;
+    }
+
+    getRgbHUrl(){
+        return this.rgbHUrl;
+    }
+    setConvertUrl(format : string){
+      let image_no_ext = this.image_name.split(".", 1)[0];
+      return this.convertUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + format + "?t=" + new Date().getTime();
+    }
+
+    getConvertUrl(){
+      return this.convertUrl;
+    }
+
+    setResizeUrl(){
+      let image_no_ext = this.image_name.split(".", 1)[0];
+      let image_ext = this.image_name.split(".", 2)[1];
+      return this.resizeUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/output/" + image_no_ext + "_resized." + image_ext + "?t=" + new Date().getTime();
+    }
+
+    getResizeUrl(){
+        return this.resizeUrl;
     }
 }

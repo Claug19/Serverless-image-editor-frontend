@@ -10,8 +10,8 @@ import { AboutComponent } from "./components/about_tab/about.component";
 
 const appRoutes: Routes = [
     {
-        path:'', 
-        component: ColorComponent
+        path:'',
+        component: LoadImageComponent
     },
     {
         path:'loadImage',

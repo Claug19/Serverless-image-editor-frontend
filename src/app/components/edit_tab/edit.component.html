@@ -1,6 +1,60 @@
 <body>
-	<br/>
-	<h1>Edit</h1>
-	<h3>Version: 1.0</h3>
-	<p></p>
+  <div class='parent'>
+    <div class='child child-left'>
+      <br/>
+      <h1>Edit</h1>
+      <h3 *ngIf="getImageName()=='-'">Load image to access this tab</h3>
+      <div *ngIf="getImageName()!='-'">
+        <h3>Chose edit request:</h3>
+        <br/>
+        <form method="post">
+          <br/>
+          <h5 >Flip image:</h5>
+          <br/>
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" (click)="onFlipChange('horizontal')" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="btnradio1">Horizontal</label>
+            <input type="radio" (click)="onFlipChange('vertical')" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio2">Vertical</label>
+          </div>
+          <br/>
+          <br/>
+          <button type="submit" (click)="flipRequest()" class="btn btn-warning">Flip image</button>
+        </form>
+        <br/>
+        <form method="post">
+          <br/>
+          <h5 >Rotate image:</h5>
+          <br/>
+          <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" (click)="onRotateChange('clockwise')" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="btnradio3">Clockwise</label>
+            <input type="radio" (click)="onRotateChange('cclockwise')" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio4">Counter clockwise</label>
+            <input type="radio" (click)="onRotateChange('180')" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio5">180 degrees</label>
+          </div>
+          <br/>
+          <br/>
+          <button type="submit" (click)="rotateRequest()" class="btn btn-warning">Rotate image</button>
+        </form>
+      </div>
+    </div>
+    <div class='child child-right'>
+      <div *ngIf="getResponse()" class="result">
+        <br/>
+        <h4>Status:</h4>
+        <textarea  readonly style="resize: none;" rows="1" cols="50">{{getResponse()}}</textarea>
+        <br/>
+        <br/>
+      </div>
+      <div *ngIf="getImageUrl()!='-'" class='child child-right' >
+        <h4 style="text-align: center">Edited image:</h4>
+        <a href="{{getEditUrl()}}" target="_blank">
+          <img src="{{getEditUrl()}}" class="photo" alt="alt"/>
+        </a>
+        <p style="text-align: center">(Click image to open at max resolution)</p>
+      </div>
+    </div>
+  </div>
 </body>

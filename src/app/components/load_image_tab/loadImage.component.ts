@@ -12,33 +12,41 @@ import {Observable} from "rxjs";
 })
 export class LoadImageComponent {
 
-  private jsonBodyHeaders = new HttpHeaders({
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-  });
+  private jsonBodyHeaders = new HttpHeaders()
+    .set('Accept', 'application/json')
+    .set('Content-Type', 'application/json');
 
   title = 'image-editor';
   private image_name = "";
-  private image_url = "";
   private image_content = "";
-  private response = {};
-  private apiUrl: string= "https://qu48i6qbjb.execute-api.us-east-1.amazonaws.com/Prod";
-  private bucketImagesUrl = "https://images-editor-app-bucket.s3.us-east-2.amazonaws.com/images/";
+  private response;
+  private apiUrl= 'http://127.0.0.1:8080';
 
   constructor(private _ImageAppService: ImageAppService, private _http:HttpClient)
   {
+  }
+
+  // getters/setters
+  getImageName()
+  {
+    return this._ImageAppService.getImageName();
+  }
+
+  getCurrentImageUrl()
+  {
+    return this._ImageAppService.getImageUrl();
+  }
+
+  getResponse()
+  {
+    return this.response;
   }
 
   onFileSelected(event:any)
   {
     if(event.target.files.length > 0)
     {
-      console.log(event.target.files[0].name);
-
+      // console.log(event.target.files[0].name);
       let files = event.target.files;
       let file = files[0];
 
@@ -47,55 +55,48 @@ export class LoadImageComponent {
         reader.onload = this._handleReaderLoaded.bind(this);
         reader.readAsBinaryString(file);
       }
-
-      this._ImageAppService.setImageName(file.name)
-      this.image_name = this.getImageName();
-      this.image_url = this.bucketImagesUrl + this.getImageName();
+      this.image_name = file.name
     }
     return this.image_name;
   }
   _handleReaderLoaded(readerEvt) {
     let binaryString = readerEvt.target.result;
     this.image_content = btoa(binaryString);
-    console.log(btoa(binaryString));
+    // console.log(btoa(binaryString));
   }
 
   uploadFile(){
     console.log("upload file");
     if ( this.image_name && this.image_content)
     {
-      this.response = this.addImageRequest(this.image_name, this.image_content);
-      console.log(this.response);
+      this.addImageRequest(this.image_name, this.image_content);
     }
   }
 
   addImageRequest(image_name: string, image_content: string){
         console.log('POST: add image');
+        this.response = "Loading ..."
 
-        const addImageUrl = this.apiUrl + "/add-image"
-        console.log(addImageUrl)
-        const addImageBody = {
-          'name' : image_name,
-          'content' : image_content
+        const addImageUrl = this.apiUrl + "/add-new-image"
+        const addImageBody =
+        {
+          "name" : image_name,
+          "content" : image_content
         };
+        // console.log("STRING", imageBodySting);
+        // console.log(addImageUrl);
+        // console.log(addImageBody);
+        // console.log(this.jsonBodyHeaders);
 
-        let preflight = this._http.options<any>(addImageUrl);
+        let result = this._http.post<any>(addImageUrl, addImageBody, { headers: this.jsonBodyHeaders });
+        result.subscribe((res) =>
+        {
+          this.response=res['message'];
+          this._ImageAppService.setImageName(image_name);
+          this._ImageAppService.setImageUrl(image_name);
+        });
 
-        preflight.subscribe();
 
-        let result= this._http.post<any>(addImageUrl, JSON.stringify(addImageBody), { headers: this.jsonBodyHeaders })
-          .pipe(map(res => res.json()));
-
-        return result.subscribe();
-    }
-
-  getImageName()
-  {
-    return this._ImageAppService.getImageName();
-  }
-
-  getResponse()
-  {
-    return this.response;
+        return result;
   }
 }

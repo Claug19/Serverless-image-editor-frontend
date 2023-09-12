@@ -1,8 +1,14 @@
 h1 {
-	color: #00ccff; 
+	color: #00ccff;
 	top: +0.5em;
 	font-size: 45px;
 	font-weight: bold;
+}
+
+h5 {
+  color: green;
+  top: +0.5em;
+  font-weight: bold;
 }
 
 p {
@@ -17,12 +23,12 @@ p {
 }
 
 .parent {
-/*  border: 1px solid black;*/
+  /*border: 1px solid black;*/
   margin: 0em;
   padding: 2rem 2rem;
 }
 .child {
-/*  border: 1px solid red;*/
+  /*border: 1px solid red;*/
   display: inline-block;
 /*  padding: 1rem 1rem;*/
 /*  padding-right: 2em;*/
@@ -30,16 +36,32 @@ p {
 }
 
 .child-left {
-	width: 50%; 
+	width: 50%;
 }
 
 .child-right {
-	width: 50%; 
+	width: 50%;
 }
 
 .photo {
 	margin: auto;
-    display: block;
+  display: block;
 	max-width: 450px;
 	max-height: 450px;
+}
+
+.line {
+  display: inline-block;
+  margin-right: 2em;
+}
+
+.shiftd {
+  /*margin-top: 1em;*/
+}
+
+.photosmall {
+  margin: auto;
+  display: block;
+  max-width: 150px;
+  max-height: 150px;
 }

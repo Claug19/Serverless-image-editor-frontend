@@ -1,6 +1,133 @@
-<body>
-	<br/>
-	<h1>Color</h1>
-	<h3>Version: 1.0</h3>
-	<p></p>
+<body xmlns="http://www.w3.org/1999/html">
+<div class='parent'>
+  <div class='child child-left'>
+    <br/>
+    <h1>Color</h1>
+      <h3 *ngIf="getImageName()=='-'">Load image to access this tab</h3>
+      <div *ngIf="getImageName()!='-'">
+        <h3>Chose color request:</h3>
+        <form method="post">
+          <br/>
+          <h5 class="line">Generate color codes text   </h5>
+          <p class="line">Color occurrence threshold:</p>
+          <input type="text" name="txt" size=3 value=500 (input)="onOccurenceThresholdChange($event)" class="line">
+          <button type="submit" (click)="colorCodesTextRequest()" class="btn btn-success line">Generate</button>
+        </form>
+        <form method="post">
+          <br/>
+          <h5 class="line">Generate color codes chart</h5>
+          <p class="line">Color occurrence threshold:</p>
+          <input type="text" name="txt" size=3 value=500 (input)="onOccurenceThresholdChange($event)" class="line">
+          <button type="submit" (click)="colorCodesChartRequest()" class="btn btn-success line">Generate</button>
+        </form>
+        <form method="post">
+          <br/>
+          <h5 class="line">Generate RGB channels  </h5>
+          <input type="checkbox" id="html" name="fav_language" value=false (input)="onGrayscaleFlagChange()" class="line">
+          <label for="html"><p class="line">Grayscale flag</p></label><br>
+          <button type="submit" (click)="rgbChannelsRequest()" class="btn btn-success line">Generate</button>
+        </form>
+        <form method="post">
+          <br/>
+          <h5 class="line">Generate RGB histograms</h5>
+<!--          <input type="checkbox" id="html2" name="fav_language" value=false (input)="onGrayscaleFlagChange()" class="line">-->
+<!--          <label for="html2"><p class="line">Grayscale flag</p></label><br>-->
+          <br/>
+          <button type="submit" (click)="rgbHistogramRequest()" class="btn btn-success line">Generate</button>
+        </form>
+      </div>
+  </div>
+  <div class='child child-right'>
+    <div *ngIf="getResponse()" style="margin-left: 5em;" class="result">
+      <br/>
+      <h4>Status:</h4>
+      <textarea  readonly style="resize: none;" rows="2" cols="50">{{getResponse()}}</textarea>
+      <br/>
+      <br/>
+      <h1 style="text-align: center">Outputs: </h1>
+      <p style="text-align: center">(Click images to open at max resolution)</p>
+    </div>
+    <table style="text-align: center; margin-left: 5em">
+      <tr>
+        <th>
+          <div *ngIf="getColorTextUrl()!=''">
+            <a href="{{getColorTextUrl()}}" target="_blank">
+              <img src="assets/text.png" class="photosmall" class="photosmall" alt="alt"/>
+              <p style="text-align: center">color codes txt</p>
+            </a>
+          </div>
+        </th>
+        <th>
+          <div *ngIf="getColorCodesUrl()!=''">
+            <a href="{{getColorCodesUrl()}}" target="_blank">
+              <img src="{{getColorCodesUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">color codes chart</p>
+            </a>
+          </div>
+        </th>
+        <th>
+          <div *ngIf="getRedChannelUrl()!=''">
+            <a href="{{getRedChannelUrl()}}" target="_blank">
+              <img src="{{getRedChannelUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">red channel</p>
+            </a>
+          </div>
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <div *ngIf="getGreenChannelUrl()!=''">
+            <a href="{{getGreenChannelUrl()}}" target="_blank">
+              <img src="{{getGreenChannelUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">green channel</p>
+            </a>
+          </div>
+        </th>
+        <th>
+          <div *ngIf="getBlueChannelUrl()!=''">
+            <a href="{{getBlueChannelUrl()}}" target="_blank">
+              <img src="{{getBlueChannelUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">blue channel</p>
+            </a>
+          </div>
+        </th>
+        <th>
+          <div *ngIf="getRedHUrl()!=''">
+            <a href="{{getRedHUrl()}}" target="_blank">
+              <img src="{{getRedHUrl()}}" class="photosmall" alt="alt"/>
+            </a>
+            <p style="text-align: center">red plot</p>
+          </div>
+        </th>
+      </tr>
+      <tr>
+        <th>
+          <div *ngIf="getGreenHUrl()!=''">
+            <a href="{{getGreenHUrl()}}" target="_blank">
+              <img src="{{getGreenHUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">green plot</p>
+            </a>
+          </div>
+        </th>
+        <th>
+          <div *ngIf="getBlueHUrl()!=''">
+            <a href="{{getBlueHUrl()}}" target="_blank">
+              <img src="{{getBlueHUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">blue plot</p>
+            </a>
+          </div>
+        </th>
+        <th>
+          <div *ngIf="getRgbHUrl()!=''">
+            <a href="{{getRgbHUrl()}}" target="_blank">
+              <img src="{{getRgbHUrl()}}" class="photosmall" alt="alt"/>
+              <p style="text-align: center">RGB plot</p>
+            </a>
+          </div>
+        </th>
+      </tr>
+    </table>
+  </div>
+</div>
+
 </body>

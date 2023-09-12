@@ -1,6 +1,41 @@
 <body>
-	<br/>
-	<h1>Size</h1>
-	<h3>Version: 1.0</h3>
-	<p></p>
+  <div class='parent'>
+    <div class='child child-left'>
+      <br/>
+      <h1>Size</h1>
+      <h3 *ngIf="getImageName()=='-'">Load image to access this tab</h3>
+      <div *ngIf="getImageName()!='-'">
+        <h3>Resize image request:</h3>
+        <p>Height and width are measured in pixels</p>
+        <br/>
+        <form method="post">
+          <br/>
+          <h5 class="line">Specify new height:</h5>
+          <textarea style="resize: none;" rows="1" cols="5" (input)="onHeightChange($event)" class="line">500</textarea>
+          <br/>
+          <br/>
+          <h5 class="line">Specify new width: </h5>
+          <textarea style="resize: none;" rows="1" cols="5" (input)="onWidthChange($event)" class="line">500</textarea>
+          <br/>
+          <br/>
+          <br/>
+          <button type="submit" (click)="resizeRequest()" class="btn btn-danger line">Resize image</button>
+        </form>
+      </div>
+      <div *ngIf="getResponse()" class="result">
+        <br/>
+        <h4>Status:</h4>
+        <textarea  readonly style="resize: none;" rows="2" cols="50">{{getResponse()}}</textarea>
+      </div>
+    </div>
+    <div class='child child-right'>
+      <div *ngIf="getResizeUrl()!='-'" class='child child-right' >
+        <h4 style="text-align: center">Resized image:</h4>
+        <a href="{{getResizeUrl()}}" target="_blank">
+          <img src="{{getResizeUrl()}}" class="photo" alt="alt"/>
+        </a>
+        <p style="text-align: center">(Click image to open at max resolution)</p>
+      </div>
+    </div>
+  </div>
 </body>
